@@ -45,21 +45,27 @@ if ($row) {
   }
 
   $spectraBlobs = array();
+  $bibBlobs = array();
 
   $res2 = mysql_query("SELECT * FROM SPECTRUM, SPECTRUM_TYPE WHERE MOLECULE_ID = " .
                       "'$molecule' AND SPECTRUM_TYPE.SPECTRUM_TYPE_ID = SPECTRUM.SPECTRUM_TYPE_ID");
   while ($row2 = mysql_fetch_assoc($res2)) {
     $specId = $row2['SPECTRUM_ID'];
     echo "  <nmr:hasSpectrum rdf:resource=\"#spectrum" . $specId . "\"/>\n";
-    $specBlob = "<rdf:Description rdf:about=\"#spectrum" . $specId . "\">\n";
+    $specBlob = "\n<rdf:Description rdf:about=\"#spectrum" . $specId . "\">\n";
     $specBlob = $specBlob . "  <nmr:spectrumId>" . $specId . "</nmr:spectrumId>\n";
     $specBlob = $specBlob . "  <nmr:spectrumType>" . $row2['NAME'] . "</nmr:spectrumType>\n";
 
     $res5 = mysql_query("SELECT * FROM SPECTRUM_LITERATURE, LITERATURE WHERE SPECTRUM_ID = " .
                       "'$specId' AND SPECTRUM_LITERATURE.LITERATURE_ID = LITERATURE.LITERATURE_ID" .
-                      " AND NOT ISNULL(LITERATURE.DOI)");
+                      " AND LITERATURE.DOI LIKE \"10.%\"");
     while ($row5 = mysql_fetch_assoc($res5)) {
-      $specBlob = $specBlob . "  <dc:source><bibo:doi>" . $row5['DOI'] . "</bibo:doi></dc:source>\n";
+      $litId = $row5['LITERATURE_ID'];
+      $specBlob = $specBlob . "  <dc:source rdf:resource=\"#bib$litId\"/>\n";
+      $bibBlob = "\n<rdf:Description rdf:about=\"#bib" . $litId . "\">\n";
+      $bibBlob = $bibBlob . "  <bibo:doi>" . $row5['DOI'] . "</bibo:doi>\n";
+      $bibBlob = $bibBlob . "</rdf:Description>\n";
+      $bibBlobs[$litId] = $bibBlob;
     }
 
     $specBlob = $specBlob . "</rdf:Description>\n";
@@ -75,6 +81,10 @@ if ($row) {
 
   foreach (array_keys($spectraBlobs) as $blob) {
     echo $spectraBlobs[$blob];
+  }
+
+  foreach (array_keys($bibBlobs) as $blob) {
+    echo $bibBlobs[$blob];
   }
 
 } else {
