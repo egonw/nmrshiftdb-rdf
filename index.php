@@ -4,7 +4,8 @@
          xmlns:chem="http://www.blueobelisk.org/chemistryblogs/"
          xmlns:dc="http://purl.org/dc/elements/1.1/"
          xmlns:foaf="http://xmlns.com/foaf/0.1/"
-         xmlns:owl="http://www.w3.org/2002/07/owl#">
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:bibo="http://purl.org/ontology/bibo/">
 
 <?php 
 
@@ -53,6 +54,14 @@ if ($row) {
     $specBlob = "<rdf:Description rdf:about=\"#spectrum" . $specId . "\">\n";
     $specBlob = $specBlob . "  <nmr:spectrumId>" . $specId . "</nmr:spectrumId>\n";
     $specBlob = $specBlob . "  <nmr:spectrumType>" . $row2['NAME'] . "</nmr:spectrumType>\n";
+
+    $res5 = mysql_query("SELECT * FROM SPECTRUM_LITERATURE, LITERATURE WHERE SPECTRUM_ID = " .
+                      "'$specId' AND SPECTRUM_LITERATURE.LITERATURE_ID = LITERATURE.LITERATURE_ID" .
+                      " AND NOT ISNULL(LITERATURE.DOI)");
+    while ($row5 = mysql_fetch_assoc($res5)) {
+      $specBlob = $specBlob . "  <dc:source><bibo:doi>" . $row5['DOI'] . "</bibo:doi></dc:source>\n";
+    }
+
     $specBlob = $specBlob . "</rdf:Description>\n";
     $spectraBlobs[$specId] = $specBlob;
   }
