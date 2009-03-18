@@ -1,0 +1,14 @@
+NMRShiftDB RDF Frontend
+=======================
+
+PHP/MySQL code that creates an RDF frontend to the NMRShiftDB.org data.
+
+Not included is the vars.php which contains the MySQL account name and password, and should look like:
+
+<?php
+
+$user = 'USER';
+$pwd = 'PASSWORD';
+
+?>
+
