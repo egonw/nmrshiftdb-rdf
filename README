@@ -1,6 +1,18 @@
 NMRShiftDB RDF Frontend
 =======================
 
+Action
+------
+
+This is the code behind the running service:
+
+http://pele.farmbio.uu.se/nmrshiftdb/?moleculeId=234
+
+where the moleculeId can be anything available in the NMRShiftDB.
+
+About
+-----
+
 PHP/MySQL code that creates an RDF frontend to the NMRShiftDB.org data.
 
 Not included is the vars.php which contains the MySQL account name and password, and should look like:
