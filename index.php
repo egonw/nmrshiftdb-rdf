@@ -29,7 +29,9 @@ if ($row) {
   echo "  <nmr:moleculeId>" . $molecule . "</nmr:moleculeId>\n";
   echo "  <foaf:homepage rdf:resource=\"http://nmrshiftdb.ice.mpg.de/portal/js_pane/P-Results/nmrshiftdbaction/showDetailsFromHome/molNumber/" . $molecule . "\"/>\n";
   if ($row['CAS_NUMBER']) {
-    echo "  <chem:casnumber>" . $row['CAS_NUMBER'] . "</chem:casnumber>\n";
+    $casnum = $row['CAS_NUMBER'];
+    echo "  <chem:casnumber>$casnum</chem:casnumber>\n";
+    echo "  <owl:sameAs rdf:resource=\"http://bio2rdf.org/cas:$casnum\"/>\n";
   }
 
   $res4 = mysql_query("SELECT * FROM CANONICAL_NAME, CANONICAL_NAME_TYPE WHERE MOLECULE_ID = " .
