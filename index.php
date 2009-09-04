@@ -25,7 +25,7 @@ $row = mysql_fetch_assoc($result);
 
 if ($row) {
   $molecule = $row['MOLECULE_ID'];
-  echo "<rdf:Description rdf:about=\".\">\n";
+  echo "<rdf:Description rdf:about=\"http://pele.farmbio.uu.se/nmrshiftdb/?moleculeId=$molecule\">\n";
   echo "  <nmr:moleculeId>" . $molecule . "</nmr:moleculeId>\n";
   echo "  <foaf:homepage rdf:resource=\"http://nmrshiftdb.ice.mpg.de/portal/js_pane/P-Results/nmrshiftdbaction/showDetailsFromHome/molNumber/" . $molecule . "\"/>\n";
   if ($row['CAS_NUMBER']) {
