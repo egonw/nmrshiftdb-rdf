@@ -71,11 +71,10 @@ if ($row) {
     $peaks = explode("|", $specData);
     for ($peakCount=0; $peakCount<count($peaks); $peakCount++) {
       $peakInfo = explode(";", $peaks[$peakCount]);
-      $specBlob = $specBlob . "  <nmr:hasPeak><nmr:peak>\n";
+      $specBlob = $specBlob . "  <nmr:hasPeak><nmr:peak rdf:about=\"" . $ns . "peakId=s" . $specId . "p" . $peakCount . "\">\n";
       $specBlob = $specBlob . "    <nmr:hasShift rdf:datatype=\"nmr:ppm\">" . $peakInfo[0] . "</nmr:hasShift>\n";
       $specBlob = $specBlob . "  </nmr:peak></nmr:hasPeak>\n";
     }
-    $specBlob = $specBlob . "  <!-- " . $specData . " -->\n";
 
     $res5 = mysql_query("SELECT * FROM SPECTRUM_LITERATURE, LITERATURE WHERE SPECTRUM_ID = " .
                       "'$specId' AND SPECTRUM_LITERATURE.LITERATURE_ID = LITERATURE.LITERATURE_ID" .
