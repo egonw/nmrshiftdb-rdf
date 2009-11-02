@@ -63,10 +63,19 @@ if ($row) {
                       "SPECTRUM_TYPE.SPECTRUM_TYPE_ID = SPECTRUM.SPECTRUM_TYPE_ID");
   while ($row2 = mysql_fetch_assoc($res2)) {
     $specId = $row2['SPECTRUM_ID'];
+    $specData = trim($row2['SPECFILE']);
     echo "  <nmr:hasSpectrum rdf:resource=\"" . $ns . "spectrumId=" . $specId . "\"/>\n";
     $specBlob = "\n<rdf:Description rdf:about=\"" . $ns . "spectrumId=" . $specId . "\">\n";
     $specBlob = $specBlob . "  <nmr:spectrumId>" . $specId . "</nmr:spectrumId>\n";
     $specBlob = $specBlob . "  <nmr:spectrumType>" . $row2['NAME'] . "</nmr:spectrumType>\n";
+    $peaks = explode("|", $specData);
+    for ($peakCount=0; $peakCount<count($peaks); $peakCount++) {
+      $peakInfo = explode(";", $peaks[$peakCount]);
+      $specBlob = $specBlob . "  <nmr:hasPeak><nmr:peak>\n";
+      $specBlob = $specBlob . "    <nmr:hasShift rdf:datatype=\"nmr:ppm\">" . $peakInfo[0] . "</nmr:hasShift>\n";
+      $specBlob = $specBlob . "  </nmr:peak></nmr:hasPeak>\n";
+    }
+    $specBlob = $specBlob . "  <!-- " . $specData . " -->\n";
 
     $res5 = mysql_query("SELECT * FROM SPECTRUM_LITERATURE, LITERATURE WHERE SPECTRUM_ID = " .
                       "'$specId' AND SPECTRUM_LITERATURE.LITERATURE_ID = LITERATURE.LITERATURE_ID" .
