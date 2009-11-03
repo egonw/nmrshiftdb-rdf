@@ -12,6 +12,7 @@
 include 'vars.php';
 
 $ns = "http://pele.farmbio.uu.se/nmrshiftdb/?";
+$foafhomepage = "http://www.ebi.ac.uk/nmrshiftdb/portal/js_pane/P-Results?nmrshiftdbaction=showDetailsFromHome&amp;molNumber=";
 
 mysql_connect("localhost", $user, $pwd) or die(mysql_error());
 # echo "<!-- Connection to the server was successful! -->\n";
@@ -36,7 +37,7 @@ if ($row) {
   $molecule = $row['MOLECULE_ID'];
   echo "<rdf:Description rdf:about=\"" . $ns . "moleculeId=$molecule\">\n";
   echo "  <nmr:moleculeId>" . $molecule . "</nmr:moleculeId>\n";
-  echo "  <foaf:homepage rdf:resource=\"http://nmrshiftdb.ice.mpg.de/portal/js_pane/P-Results/nmrshiftdbaction/showDetailsFromHome/molNumber/" . $molecule . "\"/>\n";
+  echo "  <foaf:homepage rdf:resource=\"$foafhomepage" . $molecule . "\"/>\n";
   if ($row['CAS_NUMBER']) {
     $casnum = $row['CAS_NUMBER'];
     echo "  <chem:casnumber>$casnum</chem:casnumber>\n";
