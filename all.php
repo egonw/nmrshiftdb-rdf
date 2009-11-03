@@ -84,8 +84,8 @@ if ($row) {
       $litId = $row5['LITERATURE_ID'];
       $doi = utf8_encode($row5['DOI']);
       if (strpos($doi, '<') == false) {
-        $specBlob = $specBlob . "  <dc:source rdf:resource=\"#bib$litId\"/>\n";
-        $bibBlob = "\n<rdf:Description rdf:about=\"#bib" . $litId . "\">\n";
+        $specBlob = $specBlob . "  <dc:source rdf:resource=\"" . $ns . "bibId=$litId\"/>\n";
+        $bibBlob = "\n<rdf:Description rdf:about=\"" . $ns . "bibId=" . $litId . "\">\n";
         $bibBlob = $bibBlob . "  <bibo:doi>$doi</bibo:doi>\n";
         $bibBlob = $bibBlob . "</rdf:Description>\n";
         $bibBlobs[$litId] = $bibBlob;
